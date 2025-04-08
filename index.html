@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Grok 4 DevOps</title>
   <style>
     body { font-family: Arial; background: #0d1117; color: white; padding: 20px; }
@@ -16,15 +16,33 @@
   <div id="response"></div>
 
   <script>
+    const backendURL = 'https://dfa0-2401-4900-889d-a928-1432-cd4f-9319-b90f.ngrok-free.app/chat
+'; 
+
     async function askGrok() {
       const prompt = document.getElementById('prompt').value;
-      const res = await fetch('/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt })
-      });
-      const data = await res.json();
-      document.getElementById('response').innerText = data.response || JSON.stringify(data);
+      if (!prompt) return;
+
+      if (prompt.toLowerCase().includes('elon')) {
+      document.getElementById('response').innerText = "Summoning Elon Musk... 🐦💫";
+      return; 
+    }
+
+
+      document.getElementById('response').innerText = "Thinking...";
+
+      try {
+        const res = await fetch(backendURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt })
+        });
+
+        const data = await res.json();
+        document.getElementById('response').innerText = data.response || JSON.stringify(data);
+      } catch (err) {
+        document.getElementById('response').innerText = "🚨 Error: " + err.message;
+      }
     }
   </script>
 </body>
